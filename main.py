@@ -1,28 +1,21 @@
-from geopy.geocoders import Nominatim
 from pysolar.solar import *
-import datetime
 import warnings
+from DatesAndTimes import *
+from SunElevationAzimuth import *
+from Util import get_coordinates
 
 
 def main():
 
-    latitude, longitude = get_location_coordinates()
+    d = DatesAndTimes()
+    sol = SunElevationAzimuth(d)
+    date = d.get_date()
+    latitude, longitude = get_coordinates()
 
-    date = datetime.datetime.now().astimezone()
+    print(sol.get_elevation())
+    print(sol.get_azimuth())
 
     print_info(date, latitude, longitude)
-
-
-def get_location_coordinates():
-    """ Get rough coordinates from city and country/state.
-
-    :return: a geopy location
-    """
-    geolocator = Nominatim(user_agent="my_user_agent")
-    city = "Merrick"
-    country = "NY"
-    loc = geolocator.geocode(city + ',' + country)
-    return loc.latitude, loc.longitude
 
 
 def print_info(date, lat, lon):
